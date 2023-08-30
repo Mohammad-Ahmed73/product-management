@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 29, 2023 at 07:54 PM
+-- Generation Time: Aug 30, 2023 at 09:00 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -20,6 +20,20 @@ SET time_zone = "+00:00";
 --
 -- Database: `product db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `product_id` int(5) UNSIGNED NOT NULL,
+  `product_name` varchar(40) NOT NULL,
+  `product_price` int(5) NOT NULL,
+  `product_quantity` int(5) NOT NULL,
+  `u_id` int(5) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -48,7 +62,7 @@ INSERT INTO `role` (`r_id`, `roles`) VALUES
 --
 
 CREATE TABLE `users` (
-  `u_id` int(5) NOT NULL,
+  `u_id` int(5) UNSIGNED NOT NULL,
   `u_name` varchar(30) NOT NULL,
   `u_password` varchar(30) NOT NULL,
   `r_id` int(5) UNSIGNED NOT NULL
@@ -63,11 +77,19 @@ INSERT INTO `users` (`u_id`, `u_name`, `u_password`, `r_id`) VALUES
 (3, 'testname', 'password', 1),
 (4, 'testname', 'password', 1),
 (5, 'testname1', 'password', 1),
-(6, 'Ahmed', 'ahmedahmed123', 2);
+(6, 'Ahmed', 'ahmedahmed123', 2),
+(7, 'Test', 'test123', 1);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`product_id`),
+  ADD KEY `Product Foreign key` (`u_id`);
 
 --
 -- Indexes for table `role`
@@ -87,6 +109,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `product_id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
 -- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
@@ -96,11 +124,17 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `u_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `u_id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `Product Foreign key` FOREIGN KEY (`u_id`) REFERENCES `users` (`u_id`);
 
 --
 -- Constraints for table `users`

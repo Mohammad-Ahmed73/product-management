@@ -16,20 +16,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());       // to support JSON-encoded bodies
 app.use(express.urlencoded()); // to support URL-encoded bodies
 
-app.get("/user", (req, res) => {
-  const sqlQuery = 'SELECT * FROM users';
-  db.query(sqlQuery, (err, rows) => {
-    if (err) {
-      console.error('Error executing query:', err);
-      res.status(500).send('Error fetching data from the database');
-    } else {
-      const data = {
-        users: rows,
-      };
-      res.render('index', data);
-    }
-  });
-});
 
 app.get("/login", (req, res) => {
   let data = [];
@@ -47,7 +33,10 @@ app.post("/login", async (req, res) => {
       res.status(500).send('Error fetching data from the database');
     } else {
       if (rows.length > 0) {
-        res.redirect("/dashboard");
+        console.log("userData", rows[0].u_id);
+        res.cookie('user', rows[0].u_id).redirect("/dashboard");
+
+        // res.redirect("/dashboard");
       } else {
         res.redirect("/login");
         res.status(500).send('Error registering user');
@@ -57,8 +46,6 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/register", (req, res) => {
-
-
   const sqlQuery = 'SELECT * FROM role';
 
   db.query(sqlQuery, (err, rows) => {
@@ -95,6 +82,52 @@ app.post("/register", async (req, res) => {
   } else {
     res.redirect('/register');
   }
+});
+
+
+app.get("/dashboard", (req, res) => {
+  const sql = 'SELECT * From users'
+  db.query(sql, (err, rows) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      res.status(500).send('Error fetching data from the database');
+    } else {
+      const data = {
+        users: rows,
+      };
+      console.log(data)
+      res.render('dashboard', data);
+    }
+  });
+});
+
+// app.post("/dashboard", async (req, res) => {
+//   const { product_name, product_price, product_quantity } = req.body;
+//   const insertQuery = 'INSERT INTO products (product_name, product_price, product_quantity) VALUES (?, ?, ?)'; // Change 'users' to 'products' if that's the correct table name
+
+//   try {
+//     await db.query(insertQuery, [product_name, product_price, product_quantity]);
+//     console.log("Product added successfully");
+//     res.redirect("/dashboard"); // Redirect to the dashboard after successful insert
+//   } catch (err) {
+//     console.error('Error executing insert query:', err);
+//     res.status(500).send('Error adding product');
+//   }
+// });
+
+app.post("/dashboard", async (req, res) => {
+  const { product_name, product_price, product_quantity } = req.body;
+  const insertQuery = 'INSERT INTO products (product_name, product_price, product_quantity) VALUES (?, ?, ?)';
+
+    // Then, insert the user after fetching roles
+    await db.query(insertQuery, [product_name, product_price, product_quantity], (err, result) => {
+      if (err) {
+        console.error('Error executing insert query:', err);
+        res.status(500).send('Error registering user');
+      } else {
+        res.redirect('/dashboard');
+      }
+    });
 });
 
 let checkUserExist = (username) => {
