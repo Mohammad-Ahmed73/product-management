@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 30, 2023 at 09:00 PM
+-- Generation Time: Sep 01, 2023 at 05:43 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -34,6 +34,13 @@ CREATE TABLE `products` (
   `product_quantity` int(5) NOT NULL,
   `u_id` int(5) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`product_id`, `product_name`, `product_price`, `product_quantity`, `u_id`) VALUES
+(24, 'Ahmed126', 50, 1000, 2);
 
 -- --------------------------------------------------------
 
@@ -78,7 +85,10 @@ INSERT INTO `users` (`u_id`, `u_name`, `u_password`, `r_id`) VALUES
 (4, 'testname', 'password', 1),
 (5, 'testname1', 'password', 1),
 (6, 'Ahmed', 'ahmedahmed123', 2),
-(7, 'Test', 'test123', 1);
+(7, 'Test Ahmed', 'test123', 1),
+(8, 'Ahmed 123', 'Test123', 3),
+(9, 'Ali', '123', 2),
+(10, 'taste', '123', 1);
 
 --
 -- Indexes for dumped tables
@@ -112,7 +122,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `product_id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `role`
@@ -124,7 +134,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `u_id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `u_id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables
