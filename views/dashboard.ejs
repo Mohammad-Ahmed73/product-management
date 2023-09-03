@@ -5,36 +5,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/style.css">
-    <title>Document</title>
+    <title>DashBoard</title>
 </head>
 
 <body>
-    <header class="py-3">
+
+
+
+    <header class="bg-dark py-3">
         <div class="container-lg">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="/">Product Management</a>
+            <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+                <a class="navbar-brand text-white fw-bold" href="/">Product Management</a>
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="/login">Login</a>
-                        </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/register">Sign Up</a>
+                            <a class="nav-link text-dark bg-white rounded-3 px-3 fw-bold" href="/logout">Logout</a>
                         </li>
                     </ul>
                 </div>
             </nav>
         </div>
     </header>
-    <div class="container-lg py-5">
+
+
+    <div class="container-lg py-5 page-size">
+            <!-- Current User Section -->
+            <section class="container-lg custom-container mb-5 p-3 py-4 bg-white shadow-sm rounded-3">
+                <h3 class="mb-4 fw-bold text-center">Your Profile</h3>
+                <div class="text-center">
+                <p><b>User Name:</b> <%= currentUserName %></p>
+                <p><b>Email:</b> <%= currentUserEmail %></p>
+                <p><b>Password:</b> <%= currentUserPassword %></p>
+                <p class="mb-0"><b>Role:</b>
+                    <% if (currentRole === 1) { %>
+                        <span>Admin</span>
+                    <% } else if (currentRole === 2) { %>
+                        <span>Customer</span>
+                    <% } else { %>
+                        <span>Editor</span>
+                    <% } %>
+                </p>
+                </div>
+            </section>
+
+        <% if (currentRole === 1) { %>
+            <section class="product-list mb-5 p-3 py-4 bg-white shadow-sm rounded-3">
+            <h3 class="mb-2 fw-bold text-center">User List</h3>
+            <p class="text-center mb-4">You Are Only See Customer and Editor List</p>
+              <table class="w-100 custom-table" style="table-layout: fixed;">
+                <thead>
+                  <tr>
+                    <th>User ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Role ID</th>
+                    <th width="250">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <% users.forEach(function(user) { %>
+                        <% if (user.u_id !== currentUser && (user.r_id === 2 || user.r_id === 3)) { %>
+                          <tr>
+                            <td><%= user.u_id %></td>
+                            <td><%= user.u_name %></td>
+                            <td><%= user.u_mail %></td>
+                            <td><%= user.u_password %></td>
+                            <td>
+                              <% if (user.r_id === 2) { %>
+                                <span>Customer</span>
+                              <% } else { %>
+                                <span>Editor</span>
+                              <% } %>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-secondary d-inline-block w-auto"
+                                    data-uid="<%= user.u_id %>" onclick="showUserEditForm(this)"
+                                    data-bs-toggle="modal" data-bs-target="#update-user">
+                                    Edit User
+                                </button>
+                              <button type="button" class="btn btn-primary d-inline-block w-auto">
+                                <a href="/deleteUser/<%= user.u_id %>" class="text-white text-decoration-none">Delete User</a>
+                              </button>
+                            </td>
+                          </tr>
+                        <% } %>
+                      <% }); %>
+                </tbody>
+              </table>
+            </section>
+            <% } %>
+
         <!-- Product Listing -->
         <% if (products.length===0) { %>
             <p>No products available.</p>
             <% } else { %>
-                <section class="product-list mb-4">
-                    <h3 class="mb-3">Product List</h3>
-                    <table class="w-100" style="table-layout: fixed;">
+                <section class="product-list mb-5 p-3 py-4 bg-white shadow-sm rounded-3">
+                    <h3 class="mb-4 fw-bold text-center">Product List</h3>
+                    <table class="w-100 custom-table" style="table-layout: fixed;">
                         <tr>
                             <% if (currentRole===1 || currentRole===3) { %>
                                 <th>Product ID</th>
@@ -43,7 +113,7 @@
                                     <th>Product Price</th>
                                     <th>Product Qunatity</th>
                                     <% if (currentRole===1 || currentRole===3) { %>
-                                        <th>Action</th>
+                                        <th width="180">Action</th>
                                         <% } %>
                         </tr>
                         <% products.forEach( (product)=> { %>
@@ -64,13 +134,13 @@
                                         </td>
                                         <% if (currentRole===1 || currentRole===3) { %>
                                             <td>
-                                                <button type="button" class="btn btn-primary"
+                                                <button type="button" class="btn btn-secondary d-inline-block w-auto"
                                                     data-pid="<%= product.product_id %>" onclick="showEditForm(this)"
                                                     data-bs-toggle="modal" data-bs-target="#update-product">
                                                     Edit
                                                 </button>
-                                                <button type="button" class="btn btn-primary"><a
-                                                        href="/deleteproduct/<%=product.product_id %>">Delete</a></button>
+                                                <button type="button" class="btn btn-primary d-inline-block w-auto">
+                                                  <a href="/deleteproduct/<%=product.product_id %>" class="text-white text-decoration-none">Delete</a></button>
                                             </td>
                                             <% } %>
                             </tr>
@@ -79,37 +149,41 @@
                 </section>
                 <% } %>
 
-
-                    <div class="modal" id="update-product" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    <!-- Product Edit Modal -->
+                    <div class="modal" id="update-product" tabindex="-1" aria-labelledby="updateModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <form action="/editProduct" class="" method="POST">
                                     <div class="modal-header justify-content-center">
-                                        <h5 class="modal-title">Update Product</h5>
+                                        <h5 class="modal-title fw-bold">Update Product</h5>
                                     </div>
                                     <div class="modal-body">
                                         <% products.forEach( (product)=> { %>
                                             <div id="edit-form-<%=product.product_id %>" style="display: none;"
                                                 class="edit-row">
                                                 <input type="hidden" name="product_id" value=<%=product.product_id %>>
-                                                <input type="text" value=<%=product.product_name %>
-                                                id="edit-product-name"
-                                                name="product_name">
-                                                <input type="number" name="product_price" value=<%=product.product_price
-                                                    %>
-                                                id="edit-product-price">
-                                                <input type="number" name="product_quantity"
-                                                    value=<%=product.product_quantity %>
-                                                id="edit-product-quantity">
-
-                                            </div>
+                                                <div class="form-group">
+                                                  <label for="">Product Name</label>
+                                                  <input type="text" class="form-control" name="product_name" value=<%=product.product_name %> >
+                                                </div>
+                                                <div class="row">
+                                                  <div class="col-md-6 form-group">
+                                                    <label for="">Product Price</label>
+                                                    <input type="number" min="0" max="10000" class="form-control" name="product_price" value=<%=product.product_price%> />
+                                                  </div>
+                                                  <div class="col-md-6 form-group">
+                                                    <label for="">Product Quantity</label>
+                                                    <input type="number" min="0" max="10000" class="form-control" name="product_quantity"  value=<%=product.product_quantity %> >
+                                                  </div>
+                                                </div>
+                                              </div>
                                             <% }) %>
                                     </div>
-                                    <div class="modal-footer">
+                                    <div class="modal-footer justify-content-center">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                                             id="close-modal">Close</button>
-                                        <button type="submit" class="btn primary-btn">
+                                        <button type="submit" class="btn btn-primary w-auto d-inline-block">
                                             Update
                                         </button>
                                     </div>
@@ -118,28 +192,70 @@
                         </div>
                     </div>
 
+                    <!-- User Edit Modal -->
+<div class="modal" id="update-user" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title fw-bold">Update User</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="user-close-modal"></button>
+          </div>
+          <div class="modal-body">
+            <% users.forEach((user) => { %>
+                <% if (user.u_id !== currentUser && (user.r_id === 2 || user.r_id === 3)) { %>
+                <div class="edit-row" id="edit-form-<%= user.u_id %>" style="display: none;">
+                    <form action="/editUser" method="post" class="row">
+                        <input type="hidden" name="u_id" value="<%= user.u_id %>">
+                        <div class="col-md-6 form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="u_name" class="form-control" value="<%= user.u_name %>">
+                        </div>
+                        <div class="col-md-6 form-group">
+                        <label for="password">Password</label>
+                        <div class="password-field position-relative">
+                            <input type="password" id="password" name="u_password" class="password-input form-control" aria-label="Password" aria-describedby="toggle-password" value="<%= user.u_password %>">
+                            <button class="toggle-password-button btn position-absolute top-0 end-0 h-100 border-0" type="button">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+                <% } %>
+            <% }) %>
+          </div>
+      </div>
+    </div>
+  </div>
+  
+
                         <!-- Product Addition Form for Admin -->
-                        <section class="product-form mb-4">
+                        <section class="container-lg p-3 py-4 bg-white shadow-sm rounded-3 custom-container">
                             <% if (currentRole === 1) { %>
-                                <h2 class="mb-3">Add Product</h2>
+                                <h2 class="mb-4 fw-bold text-center">Add Product</h2>
                                 <form action="/dashboard" method="post" id="addProductForm">
                                     <div class="mb-3">
                                         <label for="product-name" class="form-label">Product Name</label>
                                         <input type="text" name="product_name" class="form-control" id="" required>
                                     </div>
-                                    <div class="mb-3">
+                                    <div class="row">
+                                      <div class="col-md-6 mb-3">
                                         <label for="product-price" class="form-label">Product Price</label>
-                                        <input type="number" name="product_price" class="form-control" id="" required>
+                                        <input type="number" min="0" max="10000" value="0" name="product_price" class="form-control" id="" required>
+                                      </div>
+                                      <div class="col-md-6 mb-3">
+                                          <label for="product-quantity" class="form-label">Product Quantity</label>
+                                          <input type="number" min="0" max="10000" value="0" name="product_quantity" class="form-control" id=""
+                                              required>
+                                      </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="product-quantity" class="form-label">Product Quantity</label>
-                                        <input type="number" name="product_quantity" class="form-control" id=""
-                                            required>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary w-auto">Add Product</button>
+                                    <button type="submit" class="btn btn-primary w-auto mx-auto d-table">Add Product</button>
                                 </form>
                                 <% } else { %>
-                                    <p>You do not have permission to add products.</p>
+                                    <p class="mb-0 text-center fw-bold">You do not have permission to add products.</p>
                                     <% } %>
                         </section>
     </div>
@@ -152,19 +268,8 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- <script src="/script.js" type="javascript"></script> -->
+    <script src="/script.js"></script>
     <script>
-        // Get all the delete product buttons
-        const deleteButtons = document.querySelectorAll('.delete-product');
-
-        // Add event listener to each delete button
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const dataPid = button.getAttribute('data-pid');
-                console.log(`Clicked Delete for product ID: ${dataPid}`);
-                // Perform delete operation or other logic here
-            });
-        });
 
         function showEditForm(button) {
             // Get the product ID from the clicked button's data-pid attribute
@@ -176,7 +281,21 @@
             document.getElementById(`edit-form-${productId}`).style.display = 'block';
         }
 
+        function showUserEditForm(button) {
+            // Get the product ID from the clicked button's data-pid attribute
+            const userId = button.getAttribute('data-uid');
+            // Fetch the product data for the given product ID (you can use AJAX or render the form server-side)
+
+
+            // Populate the form fields with the product data
+            document.getElementById(`edit-form-${userId}`).style.display = 'block';
+        }
+
         jQuery("#close-modal").click(function () {
+            jQuery('.edit-row').hide();
+        });
+
+        jQuery("#user-close-modal").click(function () {
             jQuery('.edit-row').hide();
         });
 

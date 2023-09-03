@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 01, 2023 at 05:43 PM
+-- Generation Time: Sep 03, 2023 at 05:28 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -40,7 +40,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `product_name`, `product_price`, `product_quantity`, `u_id`) VALUES
-(24, 'Ahmed126', 50, 1000, 2);
+(28, 'Ahmed', 26, 20, 16);
 
 -- --------------------------------------------------------
 
@@ -71,6 +71,7 @@ INSERT INTO `role` (`r_id`, `roles`) VALUES
 CREATE TABLE `users` (
   `u_id` int(5) UNSIGNED NOT NULL,
   `u_name` varchar(30) NOT NULL,
+  `u_mail` varchar(40) NOT NULL,
   `u_password` varchar(30) NOT NULL,
   `r_id` int(5) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -79,16 +80,14 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`u_id`, `u_name`, `u_password`, `r_id`) VALUES
-(2, 'testname', 'password', 1),
-(3, 'testname', 'password', 1),
-(4, 'testname', 'password', 1),
-(5, 'testname1', 'password', 1),
-(6, 'Ahmed', 'ahmedahmed123', 2),
-(7, 'Test Ahmed', 'test123', 1),
-(8, 'Ahmed 123', 'Test123', 3),
-(9, 'Ali', '123', 2),
-(10, 'taste', '123', 1);
+INSERT INTO `users` (`u_id`, `u_name`, `u_mail`, `u_password`, `r_id`) VALUES
+(8, 'Ahmed 1234', 'test123567@test.com', 'Ahmed321', 3),
+(9, 'Ali', 'test1234@test.com', '123', 2),
+(14, 'Customer', 'customer@customer.com', 'customer', 2),
+(15, 'Editor', 'editor1@editor.com', '1236', 3),
+(16, '', 'ahmed@test.com', '123', 1),
+(17, 'test', 'ahmed1@test.com', '123', 1),
+(18, 'Mohammad Ahmed', 'mohammadahmed@test.com', 'admin', 1);
 
 --
 -- Indexes for dumped tables
@@ -122,7 +121,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `product_id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `role`
@@ -134,7 +133,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `u_id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `u_id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables

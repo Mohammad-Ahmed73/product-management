@@ -1,29 +1,12 @@
-jQuery(document).ready(function () {
-  jQuery("#loginForm").submit(function (event) {
-    event.preventDefault();
-    const username = jQuery("#loginUsername").val();
-    const password = jQuery("#loginPassword").val();
+document.addEventListener('DOMContentLoaded', () => {
+  const passwordInputs = document.querySelectorAll('.password-input');
+const togglePasswordButtons = document.querySelectorAll('.toggle-password-button');
 
-    // Perform client-side validation
-    if (username && password) {
-      // You can make an AJAX request to the server for login
-      console.log("Logged in:", username);
-    } else {
-      alert("Please fill in both fields.");
-    }
+togglePasswordButtons.forEach((button, index) => {
+  button.addEventListener('click', () => {
+    const passwordInput = passwordInputs[index];
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
   });
-
-  jQuery("#registerForm").submit(function (event) {
-    event.preventDefault();
-    const username = jQuery("#registerUsername").val();
-    const password = jQuery("#registerPassword").val();
-
-    // Perform client-side validation
-    if (username && password) {
-      // You can make an AJAX request to the server for registration
-      console.log("Registered:", username);
-    } else {
-      alert("Please fill in both fields.");
-    }
-  });
+});
 });
